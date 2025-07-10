@@ -144,9 +144,9 @@ module.exports.createPost = async (req, res) => {
     req.body.position = Number(req.body.position)
   }
 
-  if(req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`
-  }
+  // if(req.file) {
+  //   req.body.thumbnail = `/uploads/${req.file.filename}`
+  // }
   
   // console.log("ok")
 
