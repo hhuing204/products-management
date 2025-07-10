@@ -21,6 +21,15 @@ module.exports.products = async (req, res) => {
   if (searchObj.regex) {
     find.title = searchObj.regex
   }
+
+  // sort
+  let sort = {}
+
+  if(req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else {
+    sort.position = "desc"
+  }
   
   //pagination
   const countProducts = await Products.countDocuments(find)
@@ -37,7 +46,7 @@ module.exports.products = async (req, res) => {
 
 
   const products = await Products.find(find)
-    .sort( {position: "desc"})
+    .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
   res.render('admin/pages/products/index', 
