@@ -1,4 +1,5 @@
 const express = require("express")
+const path = require("path")
 require('dotenv').config()
 const db = require("./config/database")
 const systemConfig = require("./config/system")
@@ -19,6 +20,12 @@ const app = express()
 app.use(cookieParser(process.env.FLASH_KEYBOARD))
 app.use(session( {cookie: {maxAge: 60000}}))
 app.use(flash())
+
+//tinyMCE
+app.use(
+    '/tinymce', 
+    express.static(path.join(__dirname, 'node_modules', 'tinymce'))
+)
 
 
 app.use(methodOverride("_method"))
