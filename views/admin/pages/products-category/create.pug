@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block main
     +alert-success(3000)
@@ -22,12 +23,21 @@ block main
 
         div(class="form-group")
             label(for="parent_id") Parent Id
-            input(
-                type="text"
-                class="form-control"
+            //- input(
+            //-     type="text"
+            //-     class="form-control"
+            //-     id="parent-id"
+            //-     name="parent-id"
+            //- )
+            select(
+                name="parent_id"
                 id="parent-id"
-                name="parent-id"
+                class="form-control"
             )
+                option(value="") -- Select father category --
+                if(records)
+                    +select-tree(records)
+
 
         div(class="form-group")
             label(for="desc") Description

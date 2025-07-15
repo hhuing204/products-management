@@ -1,5 +1,6 @@
 const ProductCategory = require("../../models/product-category.model")
 const systemConfig = require("../../config/system")
+const createTreeHelper = require("../../helpers/createTree")
 
 module.exports.index = async (req, res) => {
 
@@ -7,22 +8,36 @@ module.exports.index = async (req, res) => {
     deleted: false
   }
 
-  const records = await ProductCategory.find(find)
+
+  const records = await ProductCategory.find(find);
+
+  const newRecords = createTreeHelper.createTree(records)
+
   res.render('admin/pages/products-category/index', 
     { 
       title: 'Products Category', 
-      records: records
+      records: newRecords
     })
     // res.send("Welcome to list product analysis!")
   }
 
 // [GET] /admin/products-category/create
   module.exports.create = async (req, res) => {
-    
+    let find = {
+      deleted: false
+    }
+
+
+    const records = await ProductCategory.find(find);
+
+    const newRecords = createTreeHelper.createTree(records)
+
+    // console.log(newRecords)
 
     res.render('admin/pages/products-category/create', 
     { 
-      title: 'Products Category Create'
+      title: 'Products Category Create',
+      records: newRecords
     })
     // res.send("Welcome to list product analysis!")
   }
