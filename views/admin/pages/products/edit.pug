@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block main
     +alert-success(3000)
@@ -20,6 +21,18 @@ block main
                 name="title"
                 value= product.title
             )
+
+        div(class="form-group")
+            label(for="product_category_id") Category
+            select(
+                name="product_category_id"
+                id="product_category_id"
+                class="form-control"
+            )
+                option(value="") -- Select category --
+                if(records)
+                    +select-tree(records, 1, product.product_category_id)
+
         div(class="form-group")
             label(for="desc") Description
             textarea(
@@ -27,7 +40,7 @@ block main
                 id="desc"
                 name="description"
                 rows="5"
-            ) #{product.description}
+            ) !{product.description}
         div(class="form-group")
             label(for="price") Price
             input(

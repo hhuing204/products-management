@@ -5,9 +5,9 @@ include ../../mixins/select-tree.pug
 block main
     +alert-success(3000)
     +alert-failure(3000)
-    h1(class="mb-4") Add new product category
+    h1(class="mb-4") Edit product category
     form(
-        action=`${prefixAdmin}/products-category/create` 
+        action=`${prefixAdmin}/products-category/edit/${data.id}?_method=PATCH` 
         method="POST"
         enctype="multipart/form-data"
     )
@@ -19,6 +19,7 @@ block main
                 id="title"
                 name="title"
                 required
+                value=data.title
             )
 
         div(class="form-group")
@@ -30,7 +31,7 @@ block main
             )
                 option(value="") -- Select father category --
                 if(records)
-                    +select-tree(records)
+                    +select-tree(records, 1, data.parent_id)
 
 
         div(class="form-group")
@@ -40,7 +41,7 @@ block main
                 id="desc"
                 name="description"
                 rows="5"
-            )
+            ) !{data.description}
         
         div(
             class="form-group"
@@ -68,7 +69,7 @@ block main
                 upload-image-input
             )
             img(
-                src=""
+                src=data.thumbnail
                 upload-image-preview
                 class="image-preview"
             )
@@ -86,6 +87,18 @@ block main
                 name="position"
                 placeholder="Auto increase"
                 min="1"
+                value=data.position
+            )
+        div(class="form-group")
+            label(for="position") Position
+            input(
+                type="number"
+                class="form-control"
+                id="position"
+                name="position"
+                placeholder="Auto increase"
+                min="1"
+                value=data.position
             )
         div(class="form-group form-check form-check-inline")
             input(
@@ -94,7 +107,7 @@ block main
                 id="statusActive"
                 name="status"
                 value="active"
-                checked
+                checked=data.status === "active"
             )
             label(for="statusActive" class="form-check-label") Active
         div(class="form-group form-check form-check-inline")
@@ -104,13 +117,18 @@ block main
                 id="statusInactive"
                 name="status"
                 value="inactive"
+                checked=data.status === "inactive"
             )
             label(for="statusInactive" class="form-check-label") Inactive
         div(class="form-group")
             button(
                 type="submit"
-                class="btn btn-primary"
-            ) Add new
+                class="btn btn-primary me-2"
+            ) Change
+            a(
+                href=`${prefixAdmin}/products`
+                class="btn btn-danger"
+            ) Cancel
 
 
     //- script(src="/admin/js/product.js")
