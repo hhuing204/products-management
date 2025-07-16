@@ -88,7 +88,7 @@ module.exports.edit = async (req, res) => {
 }
 
 
-  //[POST] admin/products/edit/:id
+  //[PATCH] admin/products/edit/:id
   module.exports.editPatch = async (req, res) => {
     const id = req.params.id
 
@@ -98,8 +98,8 @@ module.exports.edit = async (req, res) => {
       _id: id
     }, req.body)
 
-    const record = new ProductCategory(req.body)
-    await record.save()
+    // const record = new ProductCategory(req.body)
+    // await record.save()
 
     req.flash("success", `This product has already been edited!`)
     res.redirect(`${systemConfig.prefixAdmin}/products-category`)
