@@ -11,8 +11,7 @@ module.exports.index= async (req, res) => {
   const records = await Role.find(find)
 
   res.render('admin/pages/role/index', { 
-    title: 'Permissions', 
-    message: 'Welcome to Permissions',
+    title: 'Roles', 
     records: records
   })
 }
@@ -79,6 +78,47 @@ module.exports.edit= async (req, res) => {
     } catch (error) {
       res.redirect(`${systemConfig.prefixAdmin}/roles`)
     }
+
+
+}
+
+
+
+//[GET] /admin/roles/permissions
+module.exports.permissions= async (req, res) => {
+  let find = {
+    deleted: false
+  }
+
+  const records = await Role.find(find)
+
+  res.render('admin/pages/role/permissions', { 
+    title: 'Create a permission',
+    records: records
+  })
+}
+
+
+ //[PATCH] admin/roles/permissions
+ module.exports.permissionsPatch = async (req, res) => {
+  // console.log(JSON.parse(req.body.permissions))
+  try {
+    const permissions = JSON.parse(req.body.permissions)
+
+    for (const item of permissions) {
+      await Role.updateOne({
+        _id: item.id
+      },{
+        permissions: item.listPermissions
+      })
+    }
+    req.flash("success", `This permission has already been udated!`)
+    res.redirect(`${systemConfig.prefixAdmin}/roles/permissions`)
+    
+
+  } catch (error) {
+    res.redirect(`${systemConfig.prefixAdmin}/roles/permissions`)
+  }
 
 
 }
