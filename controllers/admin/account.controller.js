@@ -59,7 +59,59 @@ module.exports.createPost= async (req, res) => {
     
         req.flash("success", `This Account has already been created!`)
         res.redirect(`${systemConfig.prefixAdmin}/accounts`)
-    }
-
-    
+    } 
   }
+
+//[GET] admin/account/edit/:id
+module.exports.edit = async (req, res) => {
+
+    try {
+      const find = {
+        deleted: false,
+        _id: req.params.id
+      }
+    
+      const data = await Accounts.findOne(find)
+  
+      const roles = await Role.find({
+        deleted: false
+      });
+      
+      
+      res.render("admin/pages/accounts/edit", {
+        title: "Edit an account",
+        data: data,
+        roles: roles
+      })
+    } catch (error) {
+      res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+      req.flash("error", `This account does not exist`)
+    }
+  }
+
+//[PATCH] /admin/roles/edit
+module.exports.editPatch= async (req, res) => {
+
+    const emailExist = await Accounts.findOne({
+        _id: {$ne: req.params.id},
+        email: req.body.email,
+        deleted: false
+    })
+
+    if (emailExist){
+        req.flash("error", `Email ${req.body.email} has already existed!`)
+        res.redirect(`${systemConfig.prefixAdmin}/accounts/create`)
+    } else {
+        if(req.body.password) {
+            req.body.password = md5(req.body.password)
+        } else {
+            delete req.body.password
+        }
+    
+        await Accounts.updateOne({
+            _id: req.params.id
+        }, req.body)
+        req.flash("success", `This Account has already been edited!`)
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+    }
+} 

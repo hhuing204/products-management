@@ -22,8 +22,13 @@ route.post(
     uploadCloud.upload,
     validate.createPost, 
     controller.createPost)
-// route.get('/edit/:id', controller.edit)
-// route.patch('/edit/:id', controller.editPatch)
+route.get('/edit/:id', controller.edit)
+route.patch(
+    '/edit/:id', 
+    upload.single("avatar"), 
+    uploadCloud.upload,
+    validate.editPatch, 
+    controller.editPatch)
 // route.get('/permissions', controller.permissions)
 // route.patch('/permissions', controller.permissionsPatch)
 
