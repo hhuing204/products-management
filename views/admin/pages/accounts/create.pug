@@ -1,0 +1,116 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert-success(3000)
+    +alert-failure(3000)
+    h1(class="mb-4") Add a new Account
+
+    form(
+        action=`${prefixAdmin}/accounts/create`, 
+        method="POST"
+        id="form-create-account" 
+        enctype="multipart/form-data"
+    )
+        div(class="form-group")
+            label(for="fullName") Fullname *
+            input(
+                type="text"
+                class="form-control"
+                id="fullName"
+                name="fullName"
+                required
+            )
+        div(class="form-group")
+            label(for="email") Email *
+            input(
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+                required
+            )
+        div(class="form-group")
+            label(for="password") Password *
+            input(
+                type="text"
+                class="form-control"
+                id="password"
+                name="password"
+                required
+            )
+
+        div(class="form-group")
+            label(for="phone") Telephone Number
+            input(
+                type="text"
+                class="form-control"
+                id="phone"
+                name="phone"
+            )
+        div(
+            class="form-group"
+            upload-image    
+        )
+
+
+            label(for="avatar") Avatar
+            //- // Text input for image URL
+            //- input#thumbnailLink.form-control(
+            //-     type="text",
+            //-     name="thumbnailLink",
+            //-     placeholder="Enter image URL"
+            //-     oninput="handleLinkInput()"
+
+            //- )
+            //- need to fix =))))
+            // OR Upload file
+            small.d-block.mt-2.text-muted
+            input#thumbnailFile.form-control-file(
+                type="file",
+                name="avatar",
+                accept="image/*"
+                onchange="handleFileInput()"
+                upload-image-input
+            )
+            img(
+                src=""
+                upload-image-preview
+                class="image-preview"
+            )
+            span(
+                button-delete 
+                style="display: none; position: absolute; margin-top: 20px; margin-left: -28px; background: red; color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; text-align: center; line-height: 24px; font-weight: bold;"
+            ) x
+
+        div(class="form-group")
+            label(for="role_id") Permissions
+            select(name="role_id" id="role_id" class="form-control")
+                option(disabled selected) --Select--
+                each item in records 
+                    option(value=item.id) #{item.title}
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statusActive"
+                name="status"
+                value="active"
+                checked
+            )
+            label(for="statusActive" class="form-check-label") Active
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statusInactive"
+                name="status"
+                value="inactive"
+            )
+            label(for="statusInactive" class="form-check-label") Inactive
+        
+        div(class="form-group")
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Add new

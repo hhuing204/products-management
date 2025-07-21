@@ -3,11 +3,12 @@ const productRouter = require("./product.route")
 const systemConfig = require("../../config/system")
 const productCategoryRouter = require("./product-category.route")
 const rolesRouter = require("./role.route")
-
+const accountRouter = require("./account.route")
 
   module.exports = (app) => {
     app.get(systemConfig.prefixAdmin + '/dashboard', dashboardRouter)
     app.use(systemConfig.prefixAdmin + '/products', productRouter)
     app.use(systemConfig.prefixAdmin + '/products-category', productCategoryRouter)
     app.use(systemConfig.prefixAdmin + '/roles', rolesRouter)
+    app.use(systemConfig.prefixAdmin + '/accounts', accountRouter)
   }
