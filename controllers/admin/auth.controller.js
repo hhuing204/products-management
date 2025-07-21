@@ -4,6 +4,10 @@ const Accounts = require("../../models/account.model")
 
 //Get
 module.exports.login = (req, res) => {
+    if(req.cookies.token) {
+        res.redirect(`${systemConfig.prefixAdmin}/dashboard`)
+        return
+    }
     res.render('admin/pages/auth/login', { title: 'Authentication', message: 'Welcome to Admin product Management' })
     // res.send("Welcome to Dashboard page")
   }
@@ -11,6 +15,7 @@ module.exports.login = (req, res) => {
 //POST
 
 module.exports.loginPost = async (req, res) => {
+    
     const {email, password} = req.body
     
     const user = await Accounts.findOne({
