@@ -2,43 +2,47 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main
-    .product-detail
-        if product.title
-            h1 #{product.title}
+    if(role.permissions.includes("products-view"))
+        .product-detail
+            if product.title
+                h1 #{product.title}
 
-        if product.price
-            div(class="mb-4") Price: <b>#{product.price}$</b>
+            if product.price
+                div(class="mb-4") Price: <b>#{product.price}$</b>
 
-        if product.discountPercentage
-            div(class="mb-4") Discount: <b>#{product.discountPercentage}%</b>
+            if product.discountPercentage
+                div(class="mb-4") Discount: <b>#{product.discountPercentage}%</b>
 
-        if product.stock
-            div(class="mb-4") Stock: <b>#{product.stock}</b>
+            if product.stock
+                div(class="mb-4") Stock: <b>#{product.stock}</b>
 
-        if product.thumbnail
-            div(class="mb-4")
-                img(src=product.thumbnail style="width: 200px")
+            if product.thumbnail
+                div(class="mb-4")
+                    img(src=product.thumbnail style="width: 200px")
 
-        if product.status
-            div(class="mb-4")
-                span Status: 
-                if product.status === "active"
-                    span(class="badge bg-success") Active
-                else 
-                    span(class="badge bg-danger") Inactive
-        if product.position 
-            div(class="mb-4") Position: <b>#{product.position}</b>
+            if product.status
+                div(class="mb-4")
+                    span Status: 
+                    if product.status === "active"
+                        span(class="badge bg-success") Active
+                    else 
+                        span(class="badge bg-danger") Inactive
+            if product.position 
+                div(class="mb-4") Position: <b>#{product.position}</b>
 
-        if product.description
-            div(class="mb-4") !{product.description}
-    
-        a(
-            href=`${prefixAdmin}/products/edit/${product.id}`
-            class="btn btn-warning me-2"
-        ) Edit product
-        a(
-            href=`${prefixAdmin}/products`
-            class="btn btn-danger"
-        ) Back to list products
+            if product.description
+                div(class="mb-4") !{product.description}
+        
+            if(role.permissions.includes("products-edit"))
+                a(
+                    href=`${prefixAdmin}/products/edit/${product.id}`
+                    class="btn btn-warning me-2"
+                ) Edit product
+            a(
+                href=`${prefixAdmin}/products`
+                class="btn btn-danger"
+            ) Back to list products
 
-    //- script(src="/admin/js/product.js")
+        //- script(src="/admin/js/product.js")
+    else
+        h1 You don't have any author for this page

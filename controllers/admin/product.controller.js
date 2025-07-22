@@ -1,4 +1,5 @@
 const Products = require("../../models/product.model")
+const Account = require("../../models/account.model")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const paginationHelper = require("../../helpers/pagination")
@@ -51,6 +52,16 @@ module.exports.products = async (req, res) => {
     .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
+
+  for(const product of products){
+    const user = await Account.findOne({
+      _id: product.createdBy.account_id
+    })
+    if(user){
+      product.accountFullName = user.fullName
+    }
+  }
+
   res.render('admin/pages/products/index', 
   { 
     title: 'Products', 
@@ -171,8 +182,13 @@ module.exports.createPost = async (req, res) => {
   
   // console.log("ok")
 
+  req.body.createdBy = {
+    account_id: res.locals.user._id
+  }
+
   
   const product = new Products(req.body)
+  // console.log(product)
   await product.save()
 
   req.flash("success", `This product has already been created!`)

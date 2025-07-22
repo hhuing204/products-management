@@ -1,4 +1,5 @@
 const express = require("express")
+const moment = require("moment")
 const path = require("path")
 require('dotenv').config()
 const db = require("./config/database")
@@ -40,6 +41,7 @@ routeClient(app)
 
 //App locals Variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin
+app.locals.moment = moment
 
 
 

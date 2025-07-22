@@ -4,52 +4,57 @@ include ../../mixins/table-tree.pug
 block main
     +alert-success(3000)
     +alert-failure(3000)
-    h1 Products Category
-            
+    if(role.permissions.includes("products-category-view"))
+        h1 Products Category
+                
 
-    .card.mb-3
-        .card-header List Products Category
-            .card-body
-                .row
-                    .col-8
-                    .col-4
-                        a(
-                            href=`${prefixAdmin}/products-category/create`
-                            class="btn btn-outline-success"
-                        ) + Add new
+        .card.mb-3
+            .card-header List Products Category
+                .card-body
+                    .row
+                        .col-8
+                        .col-4
+                            if(role.permissions.includes("products-category-create"))
+                                a(
+                                    href=`${prefixAdmin}/products-category/create`
+                                    class="btn btn-outline-success"
+                                ) + Add new
 
-                table(
-                    class="table table-hover table-sm"
-                    checkbox-multi
-                )
-                    thead
-                        tr
-                            th
-                                input(type="checkbox" name="checkall")
-                            th STT
-                            th Image
-                            th Title
-                            th Position
-                            th Status
-                            th Action
-                    tbody
-                        +table-tree(records)
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                    )
+                        thead
+                            tr
+                                th
+                                    input(type="checkbox" name="checkall")
+                                th STT
+                                th Image
+                                th Title
+                                th Position
+                                th Status
+                                th Action
+                        tbody
+                            +table-tree(records)
 
-    form(
-        action=""
-        method="POST"
-        id="form-change-status"
-        data-path=`${prefixAdmin}/products-category/change-status`
-    )
+        if(role.permissions.includes("products-category-edit"))
+            form(
+                action=""
+                method="POST"
+                id="form-change-status"
+                data-path=`${prefixAdmin}/products-category/change-status`
+            )
+        
+        form(
+            action=""
+            method="POST"
+            id="form-delete-item"
+            data-path=`${prefixAdmin}/products-category/delete`
+        )
 
-    form(
-        action=""
-        method="POST"
-        id="form-delete-item"
-        data-path=`${prefixAdmin}/products-category/delete`
-    )
 
-
-    script(src="/admin/js/product.js")
+        script(src="/admin/js/product.js")
+    else 
+        h1 You don't have any authority for this page
 
 

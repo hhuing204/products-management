@@ -4,119 +4,128 @@ include ../../mixins/sortAndSearch.pug
 include ../../mixins/alert.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/sort.pug
-block main 
-    h1 List Products
+include ../../mixins/moment.pug
+block main
+    if(role.permissions.includes("products-view"))
+        h1 List Products
 
-    +alert-success(3000)
-            
-    
-    +sortandSearch(filterStatus)
+        +alert-success(3000)
+                
+        
+        +sortandSearch(filterStatus)
 
-    +sort()
-            
+        +sort()
+                
 
-    .card.mb-3
-        .card-header List Products
-            .card-body
-                .row
-                    .col-8
-                        +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
-                    .col-4
-                        a(
-                            href=`${prefixAdmin}/products/create`
-                            class="btn btn-outline-success"
-                        ) + Add new
+        .card.mb-3
+            .card-header List Products
+                .card-body
+                    .row
+                        .col-8
+                            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                        .col-4
+                            a(
+                                href=`${prefixAdmin}/products/create`
+                                class="btn btn-outline-success"
+                            ) + Add new
 
 
 
-                table(
-                    class="table table-hover table-sm"
-                    checkbox-multi
-                )
-                    thead
-                        tr
-                            th
-                                input(type="checkbox" name="checkall")
-                            th STT
-                            th Image
-                            th Title
-                            th Price
-                            th Position
-                            th Status
-                            th Action
-                    tbody
-                    each item, index in products
-                        tr
-                            td 
-                                input(
-                                    type="checkbox"
-                                    name="id"
-                                    value=item.id
-                                )
-                            td #{pagination.limitItems*(pagination.currentPage - 1) + (index + 1)}
-                            td
-                                img(
-                                    src=item.thumbnail 
-                                    alt=item.title
-                                    width="100px" 
-                                    height="auto"
-                                )
-                            td #{item.title}
-                            td #{item.price} $
-                            td
-                                input(
-                                    type="value"
-                                    value=item.position 
-                                    style="width: 60px"
-                                    name="position"
-                                )
-                            td
-                                if (item.status == "active")
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                    )
+                        thead
+                            tr
+                                th
+                                    input(type="checkbox" name="checkall")
+                                th STT
+                                th Image
+                                th Title
+                                th Price
+                                th Position
+                                th Status
+                                th Created By
+                                th Action
+                        tbody
+                        each item, index in products
+                            //- div #{item}
+                            tr
+                                td 
+                                    input(
+                                        type="checkbox"
+                                        name="id"
+                                        value=item.id
+                                    )
+                                td #{pagination.limitItems*(pagination.currentPage - 1) + (index + 1)}
+                                td
+                                    img(
+                                        src=item.thumbnail 
+                                        alt=item.title
+                                        width="100px" 
+                                        height="auto"
+                                    )
+                                td #{item.title}
+                                td #{item.price} $
+                                td
+                                    input(
+                                        type="value"
+                                        value=item.position 
+                                        style="width: 60px"
+                                        name="position"
+                                    )
+                                td
+                                    if (item.status == "active")
+                                        a(
+                                            href="javascript:;"
+                                            data-status="active"
+                                            data-id=item.id 
+                                            button-change-status 
+                                            class="badge bg-success"
+                                        ) Active 
+                                    else 
+                                        a(
+                                            href="javascript:;"
+                                            data-status="inactive"
+                                            data-id=item.id 
+                                            button-change-status 
+                                            class="badge bg-danger"
+                                        ) Inactive
+                                td
+                                    p #{item.accountFullName}
+                                    +formatDateTime(item.createdBy.createdAt)
+                                td
                                     a(
-                                        href="javascript:;"
-                                        data-status="active"
-                                        data-id=item.id 
-                                        button-change-status 
-                                        class="badge bg-success"
-                                    ) Active 
-                                else 
+                                        href=`${prefixAdmin}/products/detail/${item.id}`
+                                        class= "btn btn-secondary btn-sm me-2"
+                                    ) Detail
                                     a(
-                                        href="javascript:;"
-                                        data-status="inactive"
-                                        data-id=item.id 
-                                        button-change-status 
-                                        class="badge bg-danger"
-                                    ) Inactive
-                            td
-                                a(
-                                    href=`${prefixAdmin}/products/detail/${item.id}`
-                                    class= "btn btn-secondary btn-sm me-2"
-                                ) Detail
-                                a(
-                                    href=`${prefixAdmin}/products/edit/${item.id}`
-                                    class= "btn btn-warning btn-sm me-2"
-                                ) Edit
-                                button(
-                                    class="btn btn-danger btn-sm ml-1"
-                                    button-delete
-                                    data-id=item.id
-                                    
-                                ) Delete
-    +pagination(pagination)
+                                        href=`${prefixAdmin}/products/edit/${item.id}`
+                                        class= "btn btn-warning btn-sm me-2"
+                                    ) Edit
+                                    button(
+                                        class="btn btn-danger btn-sm ml-1"
+                                        button-delete
+                                        data-id=item.id
+                                        
+                                    ) Delete
+        +pagination(pagination)
 
-    form(
-        action=""
-        method="POST"
-        id="form-change-status"
-        data-path=`${prefixAdmin}/products/change-status`
-    )
+        form(
+            action=""
+            method="POST"
+            id="form-change-status"
+            data-path=`${prefixAdmin}/products/change-status`
+        )
 
-    form(
-        action=""
-        method="POST"
-        id="form-delete-item"
-        data-path=`${prefixAdmin}/products/delete`
-    )
+        form(
+            action=""
+            method="POST"
+            id="form-delete-item"
+            data-path=`${prefixAdmin}/products/delete`
+        )
 
 
-    script(src="/admin/js/product.js")
+        script(src="/admin/js/product.js")
+    else 
+        h1 You don't have any authority for this page

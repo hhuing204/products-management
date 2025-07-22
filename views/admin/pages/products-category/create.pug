@@ -3,115 +3,118 @@ include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
 
 block main
-    +alert-success(3000)
-    +alert-failure(3000)
-    h1(class="mb-4") Add new product category
-    form(
-        action=`${prefixAdmin}/products-category/create` 
-        method="POST"
-        enctype="multipart/form-data"
-    )
-        div(class="form-group")
-            label(for="title") Title
-            input(
-                type="text"
-                class="form-control"
-                id="title"
-                name="title"
-                required
-            )
-
-        div(class="form-group")
-            label(for="parent_id") Parent Id
-            select(
-                name="parent_id"
-                id="parent-id"
-                class="form-control"
-            )
-                option(value="") -- Select father category --
-                if(records)
-                    +select-tree(records)
-
-
-        div(class="form-group")
-            label(for="desc") Description
-            textarea(
-                class="form-control textarea-mce"
-                id="desc"
-                name="description"
-                rows="5"
-            )
-        
-        div(
-            class="form-group"
-            upload-image    
+    if(role.permissions.includes("products-category-create"))
+        +alert-success(3000)
+        +alert-failure(3000)
+        h1(class="mb-4") Add new product category
+        form(
+            action=`${prefixAdmin}/products-category/create` 
+            method="POST"
+            enctype="multipart/form-data"
         )
+            div(class="form-group")
+                label(for="title") Title
+                input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    required
+                )
+
+            div(class="form-group")
+                label(for="parent_id") Parent Id
+                select(
+                    name="parent_id"
+                    id="parent-id"
+                    class="form-control"
+                )
+                    option(value="") -- Select father category --
+                    if(records)
+                        +select-tree(records)
 
 
-            label(for="thumbnail") Thumbnail
-            //- // Text input for image URL
-            //- input#thumbnailLink.form-control(
-            //-     type="text",
-            //-     name="thumbnailLink",
-            //-     placeholder="Enter image URL"
-            //-     oninput="handleLinkInput()"
-
-            //- )
-            //- need to fix =))))
-            // OR Upload file
-            small.d-block.mt-2.text-muted
-            input#thumbnailFile.form-control-file(
-                type="file",
-                name="thumbnail",
-                accept="image/*"
-                onchange="handleFileInput()"
-                upload-image-input
+            div(class="form-group")
+                label(for="desc") Description
+                textarea(
+                    class="form-control textarea-mce"
+                    id="desc"
+                    name="description"
+                    rows="5"
+                )
+            
+            div(
+                class="form-group"
+                upload-image    
             )
-            img(
-                src=""
-                upload-image-preview
-                class="image-preview"
-            )
-            span(
-                button-delete 
-                style="display: none; position: absolute; margin-top: 20px; margin-left: -28px; background: red; color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; text-align: center; line-height: 24px; font-weight: bold;"
-            ) x
-
-        div(class="form-group")
-            label(for="position") Position
-            input(
-                type="number"
-                class="form-control"
-                id="position"
-                name="position"
-                placeholder="Auto increase"
-                min="1"
-            )
-        div(class="form-group form-check form-check-inline")
-            input(
-                type="radio"
-                class="form-check-input"
-                id="statusActive"
-                name="status"
-                value="active"
-                checked
-            )
-            label(for="statusActive" class="form-check-label") Active
-        div(class="form-group form-check form-check-inline")
-            input(
-                type="radio"
-                class="form-check-input"
-                id="statusInactive"
-                name="status"
-                value="inactive"
-            )
-            label(for="statusInactive" class="form-check-label") Inactive
-        div(class="form-group")
-            button(
-                type="submit"
-                class="btn btn-primary"
-            ) Add new
 
 
-    //- script(src="/admin/js/product.js")
+                label(for="thumbnail") Thumbnail
+                //- // Text input for image URL
+                //- input#thumbnailLink.form-control(
+                //-     type="text",
+                //-     name="thumbnailLink",
+                //-     placeholder="Enter image URL"
+                //-     oninput="handleLinkInput()"
+
+                //- )
+                //- need to fix =))))
+                // OR Upload file
+                small.d-block.mt-2.text-muted
+                input#thumbnailFile.form-control-file(
+                    type="file",
+                    name="thumbnail",
+                    accept="image/*"
+                    onchange="handleFileInput()"
+                    upload-image-input
+                )
+                img(
+                    src=""
+                    upload-image-preview
+                    class="image-preview"
+                )
+                span(
+                    button-delete 
+                    style="display: none; position: absolute; margin-top: 20px; margin-left: -28px; background: red; color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; text-align: center; line-height: 24px; font-weight: bold;"
+                ) x
+
+            div(class="form-group")
+                label(for="position") Position
+                input(
+                    type="number"
+                    class="form-control"
+                    id="position"
+                    name="position"
+                    placeholder="Auto increase"
+                    min="1"
+                )
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statusActive"
+                    name="status"
+                    value="active"
+                    checked
+                )
+                label(for="statusActive" class="form-check-label") Active
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statusInactive"
+                    name="status"
+                    value="inactive"
+                )
+                label(for="statusInactive" class="form-check-label") Inactive
+            div(class="form-group")
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Add new
+
+
+        //- script(src="/admin/js/product.js")
+    else 
+        h1 You don't have any authority for this page
     

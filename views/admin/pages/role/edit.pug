@@ -2,37 +2,40 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main
-    +alert-success(3000)
-    +alert-failure(3000)
+    if(role.permissions.includes("roles-edit"))
+        +alert-success(3000)
+        +alert-failure(3000)
 
-    h1(class="mb-4") Add new permissions
+        h1(class="mb-4") Add new permissions
 
 
-    form(
-        action=`${prefixAdmin}/roles/edit/${data.id}?_method=PATCH`, 
-        method="POST"
-    )
-        div(class="form-group")
-            label(for="title") Title
-            input(
-                type="text"
-                class="form-control"
-                id="title"
-                name="title"
-                required
-                value=data.title
-            )
-        div(class="form-group")
-            label(for="desc") Description
-            input(
-                type="text"
-                class="form-control"
-                id="desc"
-                name="description"
-                value=data.description
-            )
-        div(class="form-group")
-            button(
-                type="submit"
-                class="btn btn-primary"
-            ) Update
+        form(
+            action=`${prefixAdmin}/roles/edit/${data.id}?_method=PATCH`, 
+            method="POST"
+        )
+            div(class="form-group")
+                label(for="title") Title
+                input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    required
+                    value=data.title
+                )
+            div(class="form-group")
+                label(for="desc") Description
+                input(
+                    type="text"
+                    class="form-control"
+                    id="desc"
+                    name="description"
+                    value=data.description
+                )
+            div(class="form-group")
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Update
+    else 
+        h1 You don't have any author for this page
