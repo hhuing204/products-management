@@ -44,6 +44,10 @@ const productSchema = new mongoose.Schema({
         account_id: String,
         deletedAt: Date
     },
+    updatedBy:[{
+        account_id: String,
+        updatedAt: Date
+    }],
     position: Number
 }, 
 {

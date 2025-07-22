@@ -60,8 +60,20 @@ module.exports.products = async (req, res) => {
     if(user){
       product.accountFullName = user.fullName
     }
+    //lay nguoi chinh sua gan nhat
+    const updatedBy = product.updatedBy[product.updatedBy.length-1]
+    if(updatedBy){
+      const userUpdated = await Account.findOne({
+        _id: updatedBy.account_id
+      })
+
+      updatedBy.accountFullName = userUpdated.fullName
+      // product.updatedBy = updatedBy
+    }
   }
 
+  
+  
   res.render('admin/pages/products/index', 
   { 
     title: 'Products', 
@@ -78,6 +90,7 @@ module.exports.products = async (req, res) => {
 module.exports.changeStatus = async (req, res) => {
   const status = req.params.status
   const id = req.params.id
+  
 
   await Products.updateOne({_id: id}, {status: status})
   
@@ -92,6 +105,7 @@ module.exports.changeMulti = async (req, res) => {
   console.log(req.body)
   const type = req.body.type
   const ids = req.body.ids.split(", ")
+  
 
   switch (type) {
     case "active":
@@ -209,6 +223,7 @@ module.exports.edit = async (req, res) => {
       deleted: false,
       _id: req.params.id
     }
+    
   
     const product = await Products.findOne(find)
 
@@ -243,12 +258,23 @@ module.exports.editPath = async (req, res) => {
   
   
   try {
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      updatedAt: new Date()
+    }
+    // console.log(updatedBy)
+    // req.body.updatedBy = updatedBy
+
     await Products.updateOne({
       _id: req.params.id
-    }, req.body)
+    }, {
+      ...req.body,
+      $push: {updatedBy: updatedBy}}
+    )
     req.flash("success", `The product has been updated successfully!`)
     
   } catch (error) {
+    console.log(error)
     req.flash("error", `The product update failed`)
   }
   const backURL = req.get('referer') || '/admin/products';
