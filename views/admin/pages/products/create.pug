@@ -138,6 +138,26 @@ block main
                     value="inactive"
                 )
                 label(for="statusInactive" class="form-check-label") Inactive
+            
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statusActive"
+                    name="featured"
+                    value="1"
+                    checked
+                )
+                label(for="statusActive" class="form-check-label") Featured
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statusInactive"
+                    name="featured"
+                    value="0"
+                )
+                label(for="statusInactive" class="form-check-label") No Featured
             div(class="form-group")
                 button(
                     type="submit"
