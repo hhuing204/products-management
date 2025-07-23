@@ -25,17 +25,30 @@ module.exports.detail = async (req, res) => {
   try {
     const find = {
       deleted: false,
-      slug: req.params.slug,
+      slug: req.params.slugProduct,
       status: "active"
     }
   
     const product = await Products.findOne(find)
+    if(product.product_category_id){
+      const category = await ProductCategory.findOne({
+        _id: product.product_category_id,
+        status: "active",
+        deleted: "false"
+      })
+
+      product.category = category
+      
+    }
+
+    product.priceNew = productHelper.newPriceProduct(product)
     
     res.render("client/pages/products/detail", {
       title: product.title,
       product: product
     })
   } catch (error) {
+    console.log(error)
     req.flash("error", `This product does not exist`)
     res.redirect(`/products`)
     
