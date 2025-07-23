@@ -44,6 +44,9 @@ module.exports.index = async (req, res) => {
 
   //[POST] admin/products/create
 module.exports.createPost = async (req, res) => {
+    if(!res.locals.role.permissions.includes("products-category-create")){
+      return
+    }
     if(req.body.position == "") {
         const count = await ProductCategory.countDocuments()
         req.body.position = count + 1
@@ -90,6 +93,9 @@ module.exports.edit = async (req, res) => {
 
   //[PATCH] admin/products/edit/:id
   module.exports.editPatch = async (req, res) => {
+    if(!res.locals.role.permissions.includes("products-category-edit")){
+      return
+    }
     const id = req.params.id
 
     req.body.position = parseInt(req.body.position)
@@ -109,6 +115,9 @@ module.exports.edit = async (req, res) => {
 
 //[PATCH] admin/products-category/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
+  if(!res.locals.role.permissions.includes("products-category-edit")){
+    return
+  }
   const status = req.params.status
   const id = req.params.id
 
@@ -122,18 +131,21 @@ module.exports.changeStatus = async (req, res) => {
 
 //[DELETE] admin/products-category/delete/:id
 module.exports.deleteItem = async (req, res) => {
-const id = req.params.id
+  if(!res.locals.role.permissions.includes("products-category-edit")){
+    return
+  }
+  const id = req.params.id
 
-//permanently delete
-// await Products.deleteOne({ _id: id})
+  //permanently delete
+  // await Products.deleteOne({ _id: id})
 
-await ProductCategory.updateOne({_id: id}, {
-  deleted: true,
-  deletedAt: new Date()
-})
+  await ProductCategory.updateOne({_id: id}, {
+    deleted: true,
+    deletedAt: new Date()
+  })
 
-req.flash("success", `This product has already been deleted!`)
-const backURL = req.get('referer') || '/admin/products-category';
-res.redirect(backURL)
+  req.flash("success", `This product has already been deleted!`)
+  const backURL = req.get('referer') || '/admin/products-category';
+  res.redirect(backURL)
 }
 
