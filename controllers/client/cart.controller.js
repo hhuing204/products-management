@@ -19,8 +19,7 @@ module.exports.index = async (req, res) => {
 
                 productInfo.priceNew = newPriceHelper.newPriceProduct(productInfo)
                 item.productInfo = productInfo
-                item.totalPrice = productInfo.priceNew * item.quantity
-                
+                item.totalPrice = Number((productInfo.priceNew * item.quantity).toFixed(2))
             }
         }
         cart.totalPrice = cart.products.reduce((sum, item) => sum + item.totalPrice, 0)
@@ -86,5 +85,24 @@ module.exports.delete = async (req, res) => {
 
 
     req.flash("success", "Delete Completed")
+    res.redirect("/cart")
+}
+
+//[GET] /update/:productId/:quantity
+module.exports.update = async (req, res) => {
+    const cartId = req.cookies.cartId
+    const productId = req.params.productId
+    const quantity = req.params.quantity
+
+    await Cart.updateOne({
+        _id: cartId,
+        "products.product_id": productId
+    }, {
+        $set: {
+            "products.$.quantity" : quantity
+        }
+    })
+
+    req.flash("success", "Change Completed")
     res.redirect("/cart")
 }
