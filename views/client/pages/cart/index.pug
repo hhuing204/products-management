@@ -21,33 +21,44 @@ block main
                             th Total 
                             th Action 
                     tbody
-                        each item, index in cart.products  
-                            tr
-                            
-                                td #{index + 1}
-                                td 
-                                    img(src=item.productInfo.thumbnail, alt=item.productInfo.title width="80px")
-                                td 
-                                    a(href=`/products/detail/${item.productInfo.slug}`) #{item.productInfo.title} 
-                                td #{item.productInfo.priceNew}$
-                                td 
-                                    input(
-                                        type="number"
-                                        name="quantity"
-                                        value=item.quantity
-                                        min="1"
-                                        product-id=item.product_id
-                                        style="width: 60px"
-                                    )
-                                td #{item.totalPrice}$
-                                td 
-                                    a(
-                                        href=`/cart/delete/${item.product_id}`
-                                        class="btn btn-danger"
-                                    ) Delete
-                h3(class="text-right") Total Order: #{cart.totalPrice}$
+                        if(cart.products.length > 0)
+                            each item, index in cart.products  
+                                tr
+                                
+                                    td #{index + 1}
+                                    td 
+                                        img(src=item.productInfo.thumbnail, alt=item.productInfo.title width="80px")
+                                    td 
+                                        a(href=`/products/detail/${item.productInfo.slug}`) #{item.productInfo.title} 
+                                    td #{item.productInfo.priceNew}$
+                                    td 
+                                        input(
+                                            type="number"
+                                            name="quantity"
+                                            value=item.quantity
+                                            min="1"
+                                            product-id=item.product_id
+                                            style="width: 60px"
+                                        )
+                                    td #{item.totalPrice}$
+                                    td 
+                                        a(
+                                            href=`/cart/delete/${item.product_id}`
+                                            class="btn btn-danger"
+                                        ) Delete
+                        else 
+                            tr 
+                                td(
+                                    colspan="7"
+                                    class="text-center"
+                                ) Empty
+                if (cart.products.length > 0)
+                    h3(class="text-right") Total Order: #{cart.totalPrice}$
+                    div(class="text-right mt-3")
+                        a(href="/checkout" class="btn btn-success") Pay
+                else
+                    h3(class="text-right") No Order
 
-                div(class="text-right mt-3")
-                    a(href="/checkout" class="btn btn-success") Pay
+                
 
     script(src="/js/cart.js")
