@@ -58,31 +58,35 @@ module.exports.detail = async (req, res) => {
 // [GET] /products/slugCategory
 module.exports.category = async (req, res) => {
   
-  const category = await ProductCategory.findOne({
-    slug: req.params.slugCategory,
-    deleted: false,
-    status: "active"
-  })
+  try {
+    const category = await ProductCategory.findOne({
+      slug: req.params.slugCategory,
+      deleted: false,
+      status: "active"
+    })
+    
   
-
-  const childsCategory = await ProductCategoryHelper.getListChildCategory(category.id)
-
-  const idChilds = childsCategory.map(item => item.id)
-
-  // console.log(childsCategory)
-  // res.send("OK")
-
-  const products = await Products.find({
-    product_category_id: {$in: [category.id, ...idChilds]},
-    deleted:false,
-    status: "active"
-  }).sort({position: "desc"})
-
-  const newProducts = productHelper.newPriceProducts(products)
-
-  res.render("client/pages/products/index", {
-    title: category.title,
-    products: newProducts
-  })
+    const childsCategory = await ProductCategoryHelper.getListChildCategory(category.id)
+  
+    const idChilds = childsCategory.map(item => item.id)
+  
+    // console.log(childsCategory)
+    // res.send("OK")
+  
+    const products = await Products.find({
+      product_category_id: {$in: [category.id, ...idChilds]},
+      deleted:false,
+      status: "active"
+    }).sort({position: "desc"})
+  
+    const newProducts = productHelper.newPriceProducts(products)
+  
+    res.render("client/pages/products/index", {
+      title: category.title,
+      products: newProducts
+    })
+  } catch (error) {
+    res.redirect("/products")
+  }
 
 }

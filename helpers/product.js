@@ -8,5 +8,5 @@ module.exports.newPriceProducts = (products) => {
 
 module.exports.newPriceProduct = (product) => {
   const priceNew = product.priceNew = (product.price*(100 - product.discountPercentage)/100).toFixed(2);
-  return priceNew
+  return Number(priceNew)
 }
