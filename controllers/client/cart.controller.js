@@ -93,16 +93,23 @@ module.exports.update = async (req, res) => {
     const cartId = req.cookies.cartId
     const productId = req.params.productId
     const quantity = req.params.quantity
+    
+    if(quantity != 0) {
+        await Cart.updateOne({
+            _id: cartId,
+            "products.product_id": productId
+        }, {
+            $set: {
+                "products.$.quantity" : quantity
+            }
+        })
+    
+        req.flash("success", "Change Completed")
+        res.redirect("/cart")
+    } else {
+        req.flash("error", "The quantity mustn't equal 0")
+        res.redirect("/cart")
+    }
 
-    await Cart.updateOne({
-        _id: cartId,
-        "products.product_id": productId
-    }, {
-        $set: {
-            "products.$.quantity" : quantity
-        }
-    })
-
-    req.flash("success", "Change Completed")
-    res.redirect("/cart")
+    
 }
