@@ -91,12 +91,24 @@ module.exports.orderPost = async (req, res) => {
 //[GET] /success/:orderId
 module.exports.success = async (req, res) => {
   try {
-      res.render("client/pages/checkout/success",{
-        title: "Successfully Order"
-      })
+    const order = await Order.findOne({_id: req.params.id})
+    for( const product of order.products){
+      const productInfo = await Product.findOne({
+        _id: product.product_id
+      }).select("title thumbnail")
+      product.productInfo = productInfo
+      product.priceNew = newPriceHelper.newPriceProduct(product)
+
+      product.totalPrice = Number((product.priceNew * product.quantity).toFixed(2))
+    }
+    order.totalPrice = order.products.reduce((sum, item) => sum + item.totalPrice, 0)
+    res.render("client/pages/checkout/success",{
+      title: "Successfull Order",
+      order: order
+    })
   } catch (error) {
       console.log(error)
-      res.redirect("products")
+      res.redirect("/products")
   }
   
 }
