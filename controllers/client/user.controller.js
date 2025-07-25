@@ -159,8 +159,8 @@ module.exports.otp = async (req, res) => {
 
 // [POST] /user/password/otp
 module.exports.otpPost = async (req, res) => {
+    const email = req.body.email
     try {
-        const email = req.body.email
         const otp = req.body.otp
 
         const result = await ForgotPassword.findOne({
@@ -219,4 +219,12 @@ module.exports.resetPasswordPost = async (req, res) => {
         req.flash("error", "please check your infor in fields")
         res.redirect("/user/password/resetPassword")
     }
+}
+
+// [GET] /user/info
+module.exports.info = async (req, res) => {
+
+    res.render("client/pages/user/info", {
+        title: "User Information",
+    })
 }

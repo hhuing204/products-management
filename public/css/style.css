@@ -247,3 +247,61 @@ header .inner-menu > ul > li {
     border-radius: 50%;
     cursor: pointer;
 }
+
+/* user detail */
+.user-detail {
+  max-width: 600px;
+  margin: auto;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.user-detail h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.user-detail .mb-4 {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #444;
+}
+
+.user-detail .mb-4 b {
+  color: #000;
+}
+
+.user-detail img {
+  width: 100px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.4em 0.65em;
+  font-size: 0.75em;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.375rem;
+  color: #fff;
+}
+
+.text-bg-success {
+  background-color: #28a745;
+}
+
+.text-bg-danger {
+  background-color: #dc3545;
+}
+
+/* end product detail */
