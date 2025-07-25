@@ -3,11 +3,11 @@ include ../mixins/sub-menu.pug
 header.header
     .container
         .row.align-items-center
-            .col-3
+            .col-2
                 .inner-logo
                     a(href="/")
                         img(src="/images/logo.jpeg", alt="Logo")
-            .col-5 
+            .col-4 
                 form(
                     action='/search'
                     method="GET"
@@ -24,7 +24,7 @@ header.header
                             type="submit"
                             class="btn btn-primary"
                         ) Search
-            .col-4
+            .col-5
                 .inner-menu
                     ul
                         li
@@ -35,4 +35,8 @@ header.header
                                 +sub-menu(productCategory, pathProduct)
                         li
                             a(href="/cart") Cart (#{miniCart ? miniCart.totalQuantity : 0})
+                        li
+                            a(href="/user/login") Login
+                        li
+                            a(href="/user/register") Register
                             
