@@ -10,5 +10,9 @@ route.post('/login',userValidate.loginPost, controller.loginPost)
 route.get('/logout', controller.logout)
 route.get('/password/forgot', controller.forgotPassword)
 route.post('/password/forgot', userValidate.forgotPasswordPost, controller.forgotPasswordPost)
+route.get('/password/otp', controller.otp)
+route.post('/password/otp', controller.otpPost)
+route.get('/password/resetPassword', controller.resetPassword)
+route.post('/password/resetPassword', userValidate.resetPasswordPost, controller.resetPasswordPost)
 
 module.exports = route

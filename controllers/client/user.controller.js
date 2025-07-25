@@ -2,6 +2,7 @@
 const md5 = require("md5")
 //helper
 const generateHelper = require("../../helpers/generate")
+const sendMailHelpper = require("../../helpers/sendMail")
 //collection
 const User = require("../../models/user.model")
 const ForgotPassword = require("../../models/forgot-password.model")
@@ -121,7 +122,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
             return
         }
         //save info into db
-        const opt = generateHelper.generateRandomNumber(8)
+        const otp = generateHelper.generateRandomNumber(8)
 
         const objectForgotPassword = {
             email: email,
@@ -133,9 +134,89 @@ module.exports.forgotPasswordPost = async (req, res) => {
         await forgotPassword.save()
 
         //send OTP here
+        const subject = "[OTP CODE] RECOVER PASSWORD"
+        const html = `
+            OTP code to recover password is <b>${otp} </b>. Time expires is 180 seconds
+        `
+        sendMailHelpper.sendMail(email, subject, html)
+
+        res.redirect(`/user/password/otp?email=${email}`)
     } catch (error) {
         console.log(error)
         req.flash("error", "please check your infor in fields")
         res.redirect("/user/password/forgot")
+    }
+}
+
+// [GET] /user/password/otp
+module.exports.otp = async (req, res) => {
+    const email = req.query.email
+    res.render("client/pages/user/otp", {
+        title: "Fill in OTP fields",
+        email: email
+    })
+}
+
+// [POST] /user/password/otp
+module.exports.otpPost = async (req, res) => {
+    try {
+        const email = req.body.email
+        const otp = req.body.otp
+
+        const result = await ForgotPassword.findOne({
+            email: email,
+            otp: otp
+        })
+
+        if(!result) {
+            req.flash("error", "Wrong OTP!")
+            res.redirect(`/user/password/otp?email=${email}`)
+            return
+        }
+
+        const user = await User.findOne({
+            email: email
+        })
+
+        res.cookie("tokenUser", user.tokenUser)
+        res.redirect("/user/password/resetPassword")
+
+        res.send("OK")
+    } catch (error) {
+        console.log(error)
+        req.flash("error", "please check your infor in fields")
+        res.redirect(`/user/password/otp?email=${email}`)
+    }
+}
+
+// [GET] /user/password/resetPassword
+module.exports.resetPassword = async (req, res) => {
+
+    res.render("client/pages/user/resetPassword", {
+
+        title: "Reset Password"
+    })
+}
+
+// [POST] /user/password/resetPassword
+module.exports.resetPasswordPost = async (req, res) => {
+    
+    try {
+        const password = req.body.password
+        const tokenUser = req.cookies.tokenUser
+
+        await User.updateOne({
+            tokenUser: tokenUser
+        }, {
+            password: md5(password)
+        })
+
+        req.flash("success", "Password has been recovered successfully!!")
+        res.redirect("/")
+        
+    } catch (error) {
+        console.log(error)
+        req.flash("error", "please check your infor in fields")
+        res.redirect("/user/password/resetPassword")
     }
 }
