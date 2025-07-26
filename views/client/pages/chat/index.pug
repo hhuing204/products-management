@@ -10,24 +10,23 @@ block main
                 +box-head("Chat")
         .row 
             .col-12 
-                .chat 
+                .chat(my-id=user.id) 
                     .inner-body 
-                        .inner-incoming 
-                            .inner-name A 
-                            .inner-content 
-                                |hello 
-                        .inner-outgoing 
-                            .inner-content 
-                                |hi 
-                        .inner-foot 
-                            form(
-                                class="inner-form"
-                                action=""
+                        each chat in chats
+                            div(class=(chat.user_id == user.id? "inner-outgoing" : "inner-incoming"))
+                                if (chat.user_id != user.id)
+                                    .inner-name #{chat.infoUser.fullName} 
+                                .inner-content 
+                                    |#{chat.content}
+                    .inner-foot 
+                        form(
+                            class="inner-form"
+                            action=""
+                        )
+                            input(
+                                type="text"
+                                placeholder="type your message..."
+                                name="content"
                             )
-                                input(
-                                    type="text"
-                                    placeholder="type your message..."
-                                    name="content"
-                                )
-                                button 
-                                    i.fa-solid.fa-paper-plane
+                            button 
+                                i.fa-solid.fa-paper-plane
