@@ -4,6 +4,7 @@ const cartRoute= require("./cart.route")
 const checkoutRoute= require("./checkout.route")
 const homeRoute = require("./home.route")
 const userRoute = require("./user.route")
+const chatRoute = require("./chat.route")
 
 //Middleware
 const categoryMiddleware = require("../../middlewares/client/category.middleware")
@@ -23,4 +24,5 @@ const settingMiddleware = require("../../middlewares/client/setting.middleware")
     app.use('/cart', cartRoute)
     app.use('/checkout', checkoutRoute)
     app.use('/user', userRoute)
+    app.use('/chat', chatRoute)
   }

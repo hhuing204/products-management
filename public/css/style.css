@@ -305,3 +305,93 @@ header .inner-menu > ul > li {
 }
 
 /* end product detail */
+
+/* Chat */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+
+.chat .inner-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  margin: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat .inner-body .inner-incoming,
+.chat .inner-body .inner-outgoing {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.chat .inner-body .inner-incoming {
+  justify-content: flex-start;
+}
+
+.chat .inner-body .inner-outgoing {
+  justify-content: flex-end;
+}
+
+.chat .inner-body .inner-incoming .inner-name {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #333;
+}
+
+.chat .inner-body .inner-incoming .inner-content {
+  background-color: #e0e0e0;
+  padding: 10px 15px;
+  border-radius: 15px;
+  max-width: 70%;
+  word-wrap: break-word;
+  color: #333;
+}
+
+.chat .inner-body .inner-outgoing .inner-content {
+  background-color: #fe5da3;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 15px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+
+.chat .inner-foot {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
+
+.chat .inner-form {
+  display: flex;
+  align-items: center;
+}
+
+.chat .inner-form input {
+  flex: 1;
+  height: 32px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 0 10px;
+  outline: none;
+}
+
+.chat .inner-form button {
+  border-radius: 15px;
+  border: 1px solid #FE5DA3;
+  background: #FE5DA3;
+  color: #fff;
+  height: 32px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+/* End chat */
