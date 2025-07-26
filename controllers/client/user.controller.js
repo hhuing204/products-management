@@ -6,6 +6,7 @@ const sendMailHelpper = require("../../helpers/sendMail")
 //collection
 const User = require("../../models/user.model")
 const ForgotPassword = require("../../models/forgot-password.model")
+const Cart = require("../../models/cart.model")
 
 
 // [GET] /user/register
@@ -78,7 +79,24 @@ module.exports.loginPost = async (req, res) => {
             return
         }
 
+
         res.cookie("tokenUser", user.tokenUser)
+        const cartId = req.cookies.cartId
+
+
+        const cartIdByUser = await Cart.findOne({user_id: user.id})
+        if(cartIdByUser){
+            res.cookie("cartIdNoUser", cartId)
+            res.cookie("cartId", cartIdByUser)
+        } else {
+            await Cart.updateOne({
+                _id: req.cookies.cartId,
+            },{
+                user_id: user.id
+            })
+        }
+
+        
         req.flash("success", "Login successfully!!")
         res.redirect("/")
 
@@ -92,7 +110,10 @@ module.exports.loginPost = async (req, res) => {
 
 // [GET] /user/logout
 module.exports.logout = async (req, res) => {
+    const cartIdNoUser = req.cookies.cartIdNoUser
+    res.cookie("cartId", cartIdNoUser)
     res.clearCookie("tokenUser")
+    res.clearCookie("cartIdNoUser")
     req.flash("success", "Logout Successfully")
     res.redirect("/")
 }
