@@ -5,8 +5,9 @@ header.header
         .row.align-items-center
             .col-2
                 .inner-logo
-                    a(href="/")
-                        img(src="/images/logo.jpeg", alt="Logo")
+                    a.d-flex.align-items-center.gap-2(href="/")
+                        img(src=settingGeneral.logo, alt=settingGeneral.websiteName, height="40")
+                        div= settingGeneral.websiteName
             .col-4 
                 form(
                     action='/search'

@@ -8,6 +8,7 @@ const rolesRouter = require("./role.route")
 const accountRouter = require("./account.route")
 const authRouter = require("./auth.route")
 const myAccountRouter = require("./myAccount.route")
+const settingRouter = require("./setting.route")
 
   module.exports = (app) => {
     app.use(
@@ -20,4 +21,5 @@ const myAccountRouter = require("./myAccount.route")
     app.use(systemConfig.prefixAdmin + '/accounts', authMiddleware.requireAuth, accountRouter)
     app.use(systemConfig.prefixAdmin + '/auth', authRouter)
     app.use(systemConfig.prefixAdmin + '/my-account', authMiddleware.requireAuth, myAccountRouter)
+    app.use(systemConfig.prefixAdmin + '/settings', authMiddleware.requireAuth, settingRouter)
   }

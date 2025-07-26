@@ -1,0 +1,99 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug 
+
+
+block main
+    h1 General Setting
+    if(role.permissions.includes("settings-general"))
+        +alert-success(3000)
+        +alert-failure(3000)
+        form(
+            action=`${prefixAdmin}/settings/general?_method=PATCH` 
+            method="POST"
+            enctype="multipart/form-data"
+        )
+            div(class="form-group")
+                label(for="websiteName") Website Name
+                input(
+                    type="text"
+                    class="form-control"
+                    id="websiteName"
+                    name="websiteName"
+                    value=(settingGeneral ? settingGeneral.websiteName : "")
+                    required
+                )
+
+            div(
+                class="form-group"
+                upload-image    
+            )
+
+
+                label(for="logo") Logo
+                // OR Upload file
+                small.d-block.mt-2.text-muted
+                input#thumbnailFile.form-control-file(
+                    type="file",
+                    name="logo",
+                    accept="image/*"
+                    onchange="handleFileInput()"
+                    upload-image-input
+                )
+                img(
+                    src=(settingGeneral ? settingGeneral.logo : "")
+                    upload-image-preview
+                    class="image-preview"
+                )
+                span(
+                    button-delete 
+                    style="display: none; position: absolute; margin-top: 20px; margin-left: -28px; background: red; color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; text-align: center; line-height: 24px; font-weight: bold;"
+                ) x
+
+            div(class="form-group")
+                label(for="phone") Phone Number
+                input(
+                    type="text"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                    value=(settingGeneral ? settingGeneral.phone : "")
+                )
+
+            div(class="form-group")
+                label(for="email") Email
+                input(
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    value=(settingGeneral ? settingGeneral.email : "")
+                )
+            div(class="form-group")
+                label(for="address") Address
+                input(
+                    type="text"
+                    class="form-control"
+                    id="address"
+                    name="address"
+                    value=(settingGeneral ? settingGeneral.address : "")
+                )
+            div(class="form-group")
+                label(for="copyright") Copyright
+                input(
+                    type="text"
+                    class="form-control"
+                    id="copyright"
+                    name="copyright"
+                    value=(settingGeneral ? settingGeneral.copyright : "")
+                )
+            
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Update
+
+
+        //- script(src="/admin/js/product.js")
+    else 
+        h1 You don't have any author for this page
+    
