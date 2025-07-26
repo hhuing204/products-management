@@ -35,12 +35,19 @@ app.use(bodyParser.urlencoded({extended: false}))
 const routeAdmin = require("./routes/admin/index.route")
 const routeClient = require("./routes/client/index.route")
 
+
+app.set("views", `${__dirname}/views`)
+app.set("view engine", "pug")
+
+app.use(express.static(`${__dirname}/public`))
+
+
 // const { Cookie } = require("express-session")
 
 routeAdmin(app)
 routeClient(app)
 try {
-    app.get(/(.*)/, (req, res) => {
+    app.get(/.*/, (req, res) => {
       res.render("client/pages/errors/404", {
         title: "404 NOT FOUND"
       });
@@ -57,10 +64,6 @@ app.locals.moment = moment
 
 
 
-app.set("views", `${__dirname}/views`)
-app.set("view engine", "pug")
-
-app.use(express.static(`${__dirname}/public`))
 
 // app.get('/', (req, res) => {
 //   res.send('Hello World')
