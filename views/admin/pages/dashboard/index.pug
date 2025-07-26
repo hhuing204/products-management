@@ -5,3 +5,56 @@ block main
     +alert-success(3000)
     +alert-failure(3000)
     h1 Welcome to Dashboard
+    .row.mt-4 
+        .col-12 
+            .card.mb-4 
+                .card-header User Information 
+                .card-body 
+                    .information-detail
+                        if(user.avatar)
+                            img(src=user.avatar width="150px" class="mb-3")
+                        
+                        if(user.fullName)
+                            p Full Name: <b>#{user.fullName}</b>
+                        if(user.email)
+                            p Email: <b>#{user.email}</b>
+                        if(user.phone)
+                            p Phone Number: <b>#{user.phone}</b>
+                        p 
+                            span Status: 
+                            span 
+                                <b>#{user.status === "active" ? "Active": "Inactive"}</b>
+                        if(role.title) 
+                            p Permissions: <b>#{role.title}</b>
+            .row
+                .col-6
+                    .card.mb-4
+                        .card-header Product Category
+                        .card-body
+                            p Total: <b>#{statistic? statistic.categoryProduct.total : 0} </b>
+                            p Active: <b>#{statistic? statistic.categoryProduct.active : 0} </b>
+                            p Inactive: <b>#{statistic? statistic.categoryProduct.inactive : 0} </b>
+
+                .col-6
+                    .card.mb-4
+                        .card-header Products
+                        .card-body
+                            p Total: <b>#{statistic? statistic.product.total : 0} </b>
+                            p Active: <b>#{statistic? statistic.product.active : 0} </b>
+                            p Inactive: <b>#{statistic? statistic.product.inactive : 0} </b>
+            .row
+                .col-6
+                    .card.mb-4
+                        .card-header Manager Account
+                        .card-body
+                            p Total: <b>#{statistic? statistic.account.total : 0} </b>
+                            p Active: <b>#{statistic? statistic.account.active : 0} </b>
+                            p Inactive: <b>#{statistic? statistic.account.inactive : 0} </b>
+
+                .col-6
+                    .card.mb-4
+                        .card-header User Account
+                        .card-body
+                            p Total: <b>#{statistic? statistic.user.total : 0} </b>
+                            p Active: <b>#{statistic? statistic.user.active : 0} </b>
+                            p Inactive: <b>#{statistic? statistic.user.inactive : 0} </b>

@@ -102,8 +102,8 @@
 
 /* End Image Preview */
 
-/* product detail */
-.product-detail {
+/* information detail */
+.information-detail {
     max-width: 600px;
     margin: auto;
     background: #f9f9f9;
@@ -113,24 +113,24 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-.product-detail h1 {
+.information-detail h1 {
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 1rem;
     color: #333;
 }
 
-.product-detail .mb-4 {
+.information-detail .mb-4 {
     margin-bottom: 1rem;
     font-size: 1rem;
     color: #444;
 }
 
-.product-detail .mb-4 b {
+.information-detail .mb-4 b {
     color: #000;
 }
 
-.product-detail img {
+.information-detail img {
     width: 100px;
     border-radius: 8px;
     border: 1px solid #ddd;
