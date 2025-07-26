@@ -7,15 +7,27 @@ const systemConfig = require("./config/system")
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const flash = require("express-flash")
+const http = require("http")
+const {Server} = require("socket.io")
 db.connect()
 const bodyParser = require("body-parser")
-
 const methodOverride = require("method-override")
+
 
 
 
 const port = process.env.PORT
 const app = express()
+
+//socketIo
+
+const server = http.createServer(app)
+const io = new Server(server)
+io.on('connection', (socket) => {
+  console.log('a user connected', socket.id)
+})
+//end socketIo
+
 
 //Init flash to get notify
 app.use(cookieParser(process.env.FLASH_KEYBOARD))
@@ -71,6 +83,6 @@ app.locals.moment = moment
 
 
 
-app.listen(port , () =>{
+server.listen(port , () =>{
     console.log(`App listening on: http://localhost:${port}`)
 })
