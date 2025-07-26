@@ -34,10 +34,20 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 const routeAdmin = require("./routes/admin/index.route")
 const routeClient = require("./routes/client/index.route")
+
 // const { Cookie } = require("express-session")
 
 routeAdmin(app)
 routeClient(app)
+try {
+    app.get(/(.*)/, (req, res) => {
+      res.render("client/pages/errors/404", {
+        title: "404 NOT FOUND"
+      });
+    });
+  } catch (err) {
+    console.error("❌ Error in catch:", err);
+}
 
 //App locals Variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin
