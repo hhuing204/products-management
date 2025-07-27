@@ -76,6 +76,9 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
     body.insertBefore(div, boxTyping)
     body.scrollTop = body.scrollHeight
 
+    //preview Images
+    const gallery = new Viewer(div)
+
 })
 //END SERVER_RETURN MESSAGE
 
@@ -187,4 +190,9 @@ if(elementListTyping){
 
 //end SERVER_RETURN_TYPING
 
-
+//preview full image
+const bodyChatPreviewImages = document.querySelector(".chat .inner-body")
+if(bodyChatPreviewImages) {
+    const gallery = new Viewer(bodyChatPreviewImages);
+}
+//end preview full image
