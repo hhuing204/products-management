@@ -15,9 +15,14 @@ block main
                         each chat in chats
                             div(class=(chat.user_id == user.id? "inner-outgoing" : "inner-incoming"))
                                 if (chat.user_id != user.id)
-                                    .inner-name #{chat.infoUser.fullName} 
-                                .inner-content 
-                                    |#{chat.content}
+                                    .inner-name #{chat.infoUser.fullName}
+                                if (chat.content) 
+                                    .inner-content 
+                                        |#{chat.content}
+                                if (chat.images)
+                                    .inner-images 
+                                        each image in chat.images 
+                                            img(src=image)
                         div(class="inner-list-typing")
                         //-     div(class="box-typing")
                         //-         div(class="inner-name") A 
@@ -25,6 +30,13 @@ block main
                         //-             span 
                         //-             span 
                         //-             span
+                    
+                    .inner-preview-images 
+                        div(
+                            class="custom-file-container" 
+                            data-upload-id="upload-image"
+                        )
+
                     .inner-foot 
                         form(
                             class="inner-form"
@@ -35,6 +47,11 @@ block main
                                 placeholder="type your message..."
                                 name="content"
                             )
+                            label(
+                                class="btn btn-light mx-2 mb-0" 
+                                for="file-upload-with-preview-upload-image"
+                            ) 
+                                <i class="fa-regular fa-image"></i>
                             span(class="button-icon btn btn-light mx-2") <i class="fa-regular fa-face-smile"></i>
                                 
                             button 
