@@ -4,6 +4,7 @@ const User = require("../../models/user.model")
 module.exports.index = async (req, res) => {
     const userId = res.locals.user.id
     const fullName = res.locals.user.fullName
+    // console.log(res.locals.user)
     // socket
     _io.once('connection', (socket) => {
         // console.log('a user connected', socket.id)
@@ -21,8 +22,18 @@ module.exports.index = async (req, res) => {
                 content: content
             })
         })
+        socket.on("CLIENT_SENT_TYPING", async (type) => {
+          // console.log(type)
+          socket.broadcast.emit("SERVER_RETURN_TYPING", {
+            userId: userId,
+            fullName: fullName,
+            type: type
+          })
+        })
       })
     // end socket
+
+
       const chats = await Chat.find({
         deleted: false
       })
