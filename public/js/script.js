@@ -15,3 +15,9 @@ if(showAlert) {
 
 
 //show alert
+
+// //detect browser or tab closing
+// window.addEventListener("beforeunload", function(e) {
+//     socket.emit("CLIENT_CLOSE_WEB", "ss")
+// })
+// //end detect

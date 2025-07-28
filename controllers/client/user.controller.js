@@ -102,6 +102,13 @@ module.exports.loginPost = async (req, res) => {
             })
         }
 
+        _io.once('connection', (socket) => {
+            socket.broadcast.emit("SERVER_RETURN_USER_STATUS_ONLINE", {
+                userId: user.id,
+                status: "online"
+            })
+        })
+
         
         req.flash("success", "Login successfully!!")
         res.redirect("/")
@@ -121,10 +128,18 @@ module.exports.logout = async (req, res) => {
     },{
         statusOnline: "offline"
     })
+
+    
     const cartIdNoUser = req.cookies.cartIdNoUser
     res.cookie("cartId", cartIdNoUser)
     res.clearCookie("tokenUser")
     res.clearCookie("cartIdNoUser")
+    _io.once('connection', (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_USER_STATUS_ONLINE", {
+            userId: res.locals.user.id,
+            status: "offline"
+        })
+    })
     req.flash("success", "Logout Successfully")
     res.redirect("/")
 }
