@@ -17,7 +17,6 @@ const roomsChatSchema = new mongoose.Schema({
         default: false
     },
     deletedAt: Date,
-    position: Number
 }, {
     timestamps: true
 })
