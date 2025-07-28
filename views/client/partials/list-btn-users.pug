@@ -16,3 +16,7 @@
             class="btn btn-primary m-1"
             href="/users/accept"
         ) Friend accept
+            span(
+                class="badge bg-light text-dark"
+                badge-users-accept=user.id
+            ) #{user.acceptFriends.length}

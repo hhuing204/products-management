@@ -81,6 +81,12 @@ module.exports.loginPost = async (req, res) => {
 
 
         res.cookie("tokenUser", user.tokenUser)
+        await User.updateOne({
+            tokenUser: user.tokenUser
+        },{
+            statusOnline: "online"
+        })
+
         const cartId = req.cookies.cartId
 
 
@@ -110,6 +116,11 @@ module.exports.loginPost = async (req, res) => {
 
 // [GET] /user/logout
 module.exports.logout = async (req, res) => {
+    await User.updateOne({
+        tokenUser: req.cookies.tokenUser
+    },{
+        statusOnline: "offline"
+    })
     const cartIdNoUser = req.cookies.cartIdNoUser
     res.cookie("cartId", cartIdNoUser)
     res.clearCookie("tokenUser")

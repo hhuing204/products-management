@@ -577,6 +577,16 @@ header .inner-menu > ul > li {
 .box-user.accepted [btn-accepted-friend] {
   display: inline-block;
 }
-/* End box-user */
+
+
+.box-user .inner-status {
+  font-size: 12px;
+  color: #00d800;
+  opacity: 0;
+}
+
+.box-user .inner-status[status="online"] {
+  opacity: 1;
+}
 
 /* End box-user */

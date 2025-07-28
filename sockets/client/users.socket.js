@@ -33,6 +33,24 @@ module.exports = (res) => {
                     $push: {requestFriends: userId}
                 })
             }
+            //length of acceptFriends
+            const infoUserB = await User.findOne({
+                _id: userId
+            })
+            const lengthAcceptFriends = infoUserB.acceptFriends.length
+            socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+                userId: userId,
+                lengthAcceptFriends: lengthAcceptFriends
+            })
+
+            //get A's info return to B
+            const infoUserA = await User.findOne({
+                _id: myUserId,
+            }).select("id avatar fullName")
+            socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT_FRIEND", {
+                userId: userId,
+                infoUserA: infoUserA
+            })
         })
 
 
@@ -67,14 +85,27 @@ module.exports = (res) => {
                     $pull: {requestFriends: userId}
                 })
             }
+            //length of acceptFriends
+            const infoUserB = await User.findOne({
+                _id: userId
+            })
+            const lengthAcceptFriends = infoUserB.acceptFriends.length
+            socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+                userId: userId,
+                lengthAcceptFriends: lengthAcceptFriends
+            })
+
+            //get Id A -> B
+            socket.broadcast.emit("SERVER_RETURN_USER_ID_CANCEL_FRIEND", {
+                userIdB: userId,
+                userIdA: myUserId
+            })
         })
 
 
         //delete accept
         socket.on("CLIENT_REFUSE_FRIEND", async (userId) => {
             const myUserId = res.locals.user.id 
-
-            // console.log(`${myUserId}, ${userId}`)
 
             //delete A's id -> B's accept friends
             const existIdinRes = await User.findOne({
