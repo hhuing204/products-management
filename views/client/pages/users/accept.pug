@@ -1,0 +1,40 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+
+block main
+  .container.my-3
+
+    include ../../partials/list-btn-users.pug
+    .row
+      .col-12
+        +box-head(title)
+
+    .row
+        each user in users
+            .col-6
+                div(class="box-user add")
+                    div(class="inner-avatar")
+                        img(src=(user.avatar? user.avatar : "/images/avatar.png"), alt=user.fullName)
+                    div(class="inner-info")
+                        div(class="inner-name") #{user.fullName}
+                        div(class="inner-buttons")
+                            button(
+                                class="btn btn-sm btn-primary m-1"
+                                btn-accept-friend=user.id
+                            ) Accept
+                            button(
+                                class="btn btn-sm btn-secondary m-1"
+                                btn-refuse-friend=user.id
+                            ) Delete
+                            button(
+                                class="btn btn-sm btn-secondary m-1"
+                                btn-deleted-friend
+                            ) Deleted
+                            button(
+                                class="btn btn-sm btn-primary m-1"
+                                btn-accepted-friend
+                            ) Accepted
+
+block script 
+    script(src="/js/users.js")
