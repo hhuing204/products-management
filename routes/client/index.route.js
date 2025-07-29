@@ -6,6 +6,7 @@ const homeRoute = require("./home.route")
 const userRoute = require("./user.route")
 const chatRoute = require("./chat.route")
 const usersRoute = require("./users.route")
+const roomsChatRoute = require("./rooms-chat.route")
 
 //Middleware
 const categoryMiddleware = require("../../middlewares/client/category.middleware")
@@ -28,5 +29,6 @@ const authMiddleware = require("../../middlewares/client/auth.middleware")
     app.use('/checkout', checkoutRoute)
     app.use('/user', userRoute)
     app.use('/chat', authMiddleware.requireAuth, chatRoute)
-    app.use('/users', authMiddleware.requireAuth, usersRoute)
+    app.use('/users', authMiddleware.requireAuth, usersRoute),
+    app.use('/rooms-chat', authMiddleware.requireAuth, roomsChatRoute)
   }

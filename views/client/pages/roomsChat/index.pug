@@ -1,0 +1,35 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+
+block main
+  .container.my-3
+
+    include ../../partials/list-btn-users.pug
+    .row
+      .col-12
+        +box-head(title)
+    
+    .row.mb-3 
+        .col-12 
+            a(
+            href="/rooms-chat/create"
+            class="btn btn-sm btn-success m-1"  
+            ) Create a new room chat
+
+    .row
+        each room in listRoomChat
+            .col-6
+                div(class="box-room")
+                    div(class="inner-avatar")
+                        img(src=("/images/group-avatar.png"), alt=room.title)
+                    div(class="inner-info")
+                        div(class="inner-name") #{room.title}
+                        div(class="inner-buttons")
+                            a(
+                                href=`/chat/${room.id}`
+                                class="btn btn-sm btn-primary m-1"
+                            ) Chat message
+
+block script 
+    script(src="/js/users.js")
